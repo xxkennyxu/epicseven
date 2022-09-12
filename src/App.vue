@@ -116,12 +116,12 @@
 import $ from 'jquery';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
-import ComponentMyHero, { Hero } from './components/MyHero.vue';
 import ComponentEnemy, { Enemy } from './components/Enemy.vue';
+import ComponentMyHero, { Hero } from './components/MyHero.vue';
 import ComponentNavbar from './components/Navbar.vue';
+import { cn } from './lang/cn';
 import { en } from './lang/en';
 import { fr } from './lang/fr';
-import { cn } from './lang/cn';
 import { tw } from './lang/tw';
 
 Vue.use(VueI18n);
@@ -280,7 +280,11 @@ export default Vue.extend({
         this.firstHero.speedDown
       );
       if (contentT1 !== '') {
-        this.report += `${this.$t('t1')}\r\n${contentT1}`;
+        this.report += `======== **${this.$t('t1')} Turn Order** ========`;
+        if (this.firstHero.speed) {
+          this.report += `\r\n My Fastest Hero: ${this.firstHero.speed}`;
+        }
+        this.report += `\r\n${contentT1}`;
       }
       let contentT2 = '';
       contentT2 += this.updateLine(
@@ -308,15 +312,20 @@ export default Vue.extend({
         this.secondHero.speedDown
       );
       if (contentT2 !== '') {
-        this.report += `${this.$t('t2')}\r\n${contentT2}`;
+        this.report += `======== **${this.$t('t2')} Turn Order** ========`;
+        if (this.secondHero.speed) {
+          this.report += `\r\n My Fastest Hero: ${this.secondHero.speed}`;
+        }
+        this.report += `\r\n${contentT2}`;
       }
     },
     updateLine(enemy: Enemy, baseSpeed: number, crBonus = 0, crPush = 0, crPushAlly = 0, speedDown = false): string {
       let content = '';
       if (enemy.name) {
-        content += enemy.name;
-        content += enemy.artifact ? ` - ${enemy.artifact}` : '';
-        content += enemy.hp ? ` - ${this.formatHp(enemy.hp)} ${this.$t('hp')}` : '';
+        content += `**\`${enemy.name}\`**`;
+        content += enemy.counter ? ` ${this.$t('setCounter')}` : '';
+        content += enemy.immunity ? ` ${this.$t('setImmunity')}` : '';
+        content += enemy.hp ? `\r\n${this.$t('hpIcon')} ${this.formatHp(enemy.hp)}` : `\r\n${this.$t('hpIcon')} ?`;
         if (enemy.cr && baseSpeed) {
           let { cr }: { cr: number } = enemy;
           cr = +cr;
@@ -337,21 +346,24 @@ export default Vue.extend({
           const speedmin = Math.round(crMin * baseSpeed);
           const speedmax = Math.round(crMax * baseSpeed);
           const speedRange = `${speedmin}-${speedmax}`;
-          content += ` - ${speedRange} ${this.$t('speed')}`;
+          content += `\r\n${this.$t('speedIcon')} \`${speedRange}\``;
+        } else {
+          content += `\r\n${this.$t('speedIcon')} ?`;
         }
-        content += enemy.counter ? ` - ${this.$t('setCounter')}` : '';
-        content += enemy.immunity ? ` - ${this.$t('setImmunity')}` : '';
-        content += enemy.infos ? ` - ${enemy.infos}` : '';
-        content += '\r\n';
+        content += enemy.artifact
+          ? `\r\n${this.$t('artifactIcon')} _${enemy.artifact}_`
+          : `\r\n${this.$t('artifactIcon')} ?`;
+        content += enemy.infos ? `\r\n-- \`\`\`${enemy.infos}\`\`\`` : '';
+        content += '\r\n\r\n';
       }
       return content;
     },
     formatHp(num: number): number | string {
-      let numFormated = num > 999 ? num / 1000 + (this.$t('formatHpK') as string) : num;
-      if ($('#locale-changer :selected').val() === 'cn' || $('#locale-changer :selected').val() === 'tw') {
-        numFormated = num > 9999 ? num / 10000 + (this.$t('formatHpK') as string) : num;
-      }
-      return numFormated;
+      // let numFormated = num > 999 ? num / 1000 + (this.$t('formatHpK') as string) : num;
+      // if ($('#locale-changer :selected').val() === 'cn' || $('#locale-changer :selected').val() === 'tw') {
+      //   numFormated = num > 9999 ? num / 10000 + (this.$t('formatHpK') as string) : num;
+      // }
+      return Intl.NumberFormat(undefined).format(num);
     },
     copyToClipboard(): void {
       if ($('#report')) {
