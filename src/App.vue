@@ -11,7 +11,9 @@
             <nav class="nav nav-tabs">
               <a class="nav-item nav-link active" href="#t1" data-toggle="tab">{{ $t('t1') }}</a>
               <a class="nav-item nav-link" href="#t2" data-toggle="tab">{{ $t('t2') }}</a>
-              <a class="nav-item nav-link" href="#result" data-toggle="tab">{{ $t('report') }}</a>
+              <a class="nav-item nav-link" v-on:click="updateReport" href="#result" data-toggle="tab">{{
+                $t('report')
+              }}</a>
             </nav>
           </div>
           <div class="toast-wrapper" style="position: absolute; top: -14px; right: 14px; z-index: 1000; height: 47px">
@@ -182,18 +184,6 @@ export default Vue.extend({
         Vue.set(this.secondHero, 'speed', 0);
       }
     },
-    'firstHero.crBonus': function (): void {
-      this.updateReport();
-    },
-    'firstHero.crPush': function (): void {
-      this.updateReport();
-    },
-    'firstHero.crPushAlly': function (): void {
-      this.updateReport();
-    },
-    'firstHero.speedDown': function (): void {
-      this.updateReport();
-    },
     'firstHero.speed': function (val): void {
       if (this.firstHero.name && val) {
         localStorage.setItem(this.firstHero.name, val);
@@ -203,33 +193,6 @@ export default Vue.extend({
       if (this.secondHero.name && val) {
         localStorage.setItem(this.secondHero.name, val);
       }
-    },
-    'secondHero.crBonus': function (): void {
-      this.updateReport();
-    },
-    'secondHero.crPush': function (): void {
-      this.updateReport();
-    },
-    'secondHero.crPushAlly': function (): void {
-      this.updateReport();
-    },
-    'secondHero.speedDown': function (): void {
-      this.updateReport();
-    },
-    tower(): void {
-      this.updateReport();
-    },
-    enemiesFirstHero: {
-      deep: true,
-      handler(): void {
-        this.updateReport();
-      },
-    },
-    enemiesSecondHero: {
-      deep: true,
-      handler(): void {
-        this.updateReport();
-      },
     },
   },
   updated() {
@@ -325,7 +288,7 @@ export default Vue.extend({
         content += `**\`${enemy.name}\`**`;
         content += enemy.counter ? ` ${this.$t('setCounter')}` : '';
         content += enemy.immunity ? ` ${this.$t('setImmunity')}` : '';
-        content += enemy.hp ? `\r\n${this.$t('hpIcon')} ${this.formatHp(enemy.hp)}` : `\r\n${this.$t('hpIcon')} ?`;
+        content += enemy.hp ? `\r\n${this.$t('hpIcon')} _${this.formatHp(enemy.hp)}_` : `\r\n${this.$t('hpIcon')} ?`;
         if (enemy.cr && baseSpeed) {
           let { cr }: { cr: number } = enemy;
           cr = +cr;
@@ -346,7 +309,7 @@ export default Vue.extend({
           const speedmin = Math.round(crMin * baseSpeed);
           const speedmax = Math.round(crMax * baseSpeed);
           const speedRange = `${speedmin}-${speedmax}`;
-          content += `\r\n${this.$t('speedIcon')} \`${speedRange}\``;
+          content += `\r\n${this.$t('speedIcon')} _${speedRange}_`;
         } else {
           content += `\r\n${this.$t('speedIcon')} ?`;
         }

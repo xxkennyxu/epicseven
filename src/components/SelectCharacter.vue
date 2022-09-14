@@ -14,14 +14,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import $ from 'jquery';
 import 'bootstrap-select';
+import $ from 'jquery';
+import Vue from 'vue';
+import { cn } from '../assets/js/cn.characters';
 import { en } from '../assets/js/en.characters';
 import { fr } from '../assets/js/fr.characters';
-import { cn } from '../assets/js/cn.characters';
-import { tw } from '../assets/js/tw.characters';
 import { nicknames } from '../assets/js/nicknames';
+import { tw } from '../assets/js/tw.characters';
 
 export default Vue.extend({
   props: ['title', 'value'],

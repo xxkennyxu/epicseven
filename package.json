@@ -12,7 +12,7 @@
     "bootstrap": "^4.6",
     "bootstrap-select": "^1.13.18",
     "core-js": "^3.11.0",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.1",
     "popper.js": "^1.16.1",
     "vue": "^2.6.12",
     "vue-i18n": "^8.24.3"
