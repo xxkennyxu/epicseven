@@ -243,9 +243,9 @@ export default Vue.extend({
         this.firstHero.speedDown
       );
       if (contentT1 !== '') {
-        this.report += `======== **${this.$t('t1')} Turn Order** ========`;
+        this.report += `======== **${this.$t('t1')}** ========`;
         if (this.firstHero.speed) {
-          this.report += `\r\n My Fastest Hero: ${this.firstHero.speed}`;
+          this.report += `\r\n My Fastest Hero: **${this.firstHero.speed}**\r\n`;
         }
         this.report += `\r\n${contentT1}`;
       }
@@ -275,9 +275,9 @@ export default Vue.extend({
         this.secondHero.speedDown
       );
       if (contentT2 !== '') {
-        this.report += `======== **${this.$t('t2')} Turn Order** ========`;
+        this.report += `======== **${this.$t('t2')}** ========`;
         if (this.secondHero.speed) {
-          this.report += `\r\n My Fastest Hero: ${this.secondHero.speed}`;
+          this.report += `\r\n My Fastest Hero: **${this.secondHero.speed}**\r\n`;
         }
         this.report += `\r\n${contentT2}`;
       }
